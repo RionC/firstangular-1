@@ -65,7 +65,12 @@ describe('variables and stuff', () => {
     // tslint:disable-next-line: quotemark
     const yourName = "Jeff";
 
+
+
+
+    const joke = 'Knock Knock';
     const myStory = `Chapter 1
+
 
     It was a dark and story night.
 

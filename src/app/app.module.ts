@@ -10,13 +10,19 @@ import { CounterComponent } from './components/counter/counter.component';
 import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { reducers } from './reducers';
+import { MediaContainerComponent } from './components/media-container/media-container.component';
+import { MediaEntryComponent } from './components/media-entry/media-entry.component';
+import { MediaListComponent } from './components/media-list/media-list.component';
 @NgModule({
   declarations: [
     AppComponent,
     ShoppingComponent,
     DashboardComponent,
     NavComponent,
-    CounterComponent
+    CounterComponent,
+    MediaContainerComponent,
+    MediaEntryComponent,
+    MediaListComponent
   ],
   imports: [
     BrowserModule,
