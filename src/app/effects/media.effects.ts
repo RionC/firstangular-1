@@ -6,15 +6,31 @@ import * as appActions from '../actions/app.actions';
 import * as mediaActions from '../actions/media.actions';
 import { HttpClient } from '@angular/common/http';
 import { MediaEntity } from '../reducers/media.reducer';
+import { environment } from '../../environments/environment';
 @Injectable()
 export class MediaEffects {
+
+  mediaConsumed$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(mediaActions.mediaConsumed),
+      switchMap(a => this.client.post(`${environment.mediaUrl}/consumed`, a.payload.media))
+    ), { dispatch: false }
+  );
+
+  // when mediaRemoved => do the delete to the api => Nothing!
+  removeMedia$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(mediaActions.mediaRemoved),
+      switchMap((a) => this.client.delete(`${environment.mediaUrl}/${a.payload.id}`))
+    ), { dispatch: false }
+  );
 
   // When mediaAdded -> Send it to the API -> mediaAddedSuccess
   addMedia$ = createEffect(() =>
     this.actions$.pipe(
       ofType(mediaActions.mediaAdded),
       map(a => a.payload), // { type: '[media] media added', payload: {} as MediaEntity } => MediaEntity
-      switchMap((originalAction) => this.client.post<MediaEntity>('http://localhost:1337/media', {
+      switchMap((originalAction) => this.client.post<MediaEntity>(`${environment.mediaUrl}`, {
         title: originalAction.title,
         recommendedBy: originalAction.recommendedBy,
         kind: originalAction.kind
@@ -30,7 +46,7 @@ export class MediaEffects {
     this.actions$.pipe(
       ofType(appActions.applicationStarted),
       // turn applicationStarted -> (api) -> mediaLoaded
-      switchMap(() => this.client.get<{ data: MediaEntity[] }>('http://localhost:1337/media')
+      switchMap(() => this.client.get<{ data: MediaEntity[] }>(`${environment.mediaUrl}`)
         .pipe(
           map(r => r.data),
           map(data => mediaActions.mediaLoaded({ payload: data }))

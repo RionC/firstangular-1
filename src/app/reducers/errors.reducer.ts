@@ -1,4 +1,5 @@
 import { createReducer, on, Action } from '@ngrx/store';
+import * as appActions from '../actions/app.actions';
 import * as mediaActions from '../actions/media.actions';
 
 export interface ErrorState {
@@ -13,6 +14,7 @@ const initialState: ErrorState = {
 
 const myReducer = createReducer(
   initialState,
+  on(appActions.clearError, () => ({ hasError: false, errorMessage: null })),
   on(mediaActions.mediaAddedFailure, (s, a) => ({ hasError: true, errorMessage: a.message }))
 );
 
